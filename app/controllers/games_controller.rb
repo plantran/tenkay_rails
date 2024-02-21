@@ -26,15 +26,18 @@ class GamesController < ApplicationController
 
   def add_score
     return redirect_to(new_game_path) unless @current_game
-    return redirect_to(play_games_path) unless params[:player][:score].presence
+    return next_player_and_redirect unless params[:player][:score].presence
 
     @current_player = @current_game.current_player
     new_score = @current_player.current_score + params[:player][:score].to_i
     if new_score > @current_game.max_score
       update_game_players
     elsif @current_player.update(current_score: new_score)
-      @current_game.finish! if new_score == @current_game.max_score
-      update_game_players
+      if new_score == @current_game.max_score
+        @current_game.finish!
+      else
+        update_game_players
+      end
     end
 
     # raise
@@ -63,5 +66,10 @@ class GamesController < ApplicationController
   def update_game_players
     next_next_player = @current_game.next_player.next_player
     @current_game.update!(current_player_id: @current_game.next_player.id, next_player_id: next_next_player.id)
+  end
+
+  def next_player_and_redirect
+    update_game_players
+    redirect_to(play_games_path)
   end
 end

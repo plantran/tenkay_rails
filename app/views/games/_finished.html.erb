@@ -1,1 +1,6 @@
-Game terminée - reset, recommencer
+<div>
+  <h1 class="text-[35px] font-medium"><%= @current_player.name %> a gagné la partie !</h1>
+</div>
+<div class="w-full mt-9">
+  <%= button_to("Recommencer", game_path(@current_game.id), method: :delete, class: "border-mygreen bg-mygreen text-black text-center cursor-pointer p-3 w-full") %>
+</div>
