@@ -1,0 +1,9 @@
+<% if @current_game.finished? %>
+  <%= render "finished" %>
+<% else %>
+  <%= render "in_progress" %>
+<% end %>
+
+<div>
+  Reset game: <%= button_to("Reset game", game_path(@current_game.id), method: :delete) %>
+</div>

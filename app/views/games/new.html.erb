@@ -1,0 +1,20 @@
+New game
+<%= simple_form_for @game, data: { turbo: false } do |f| %>
+  <%= f.input :max_score %>
+  <h3>Players</h3>
+  <% if @game.errors[:players].any? %>
+    <% @game.errors[:players].each do |error_message| %>
+      <span><%= error_message %></span>
+    <% end %>
+  <% end %>
+  <div class="players">
+    <%= f.simple_fields_for :players do |player| %>
+      <%= render "player_fields", f: player %>
+      <div class="links">
+      </div>
+    <% end %>
+    <%= link_to_add_association 'Add player', f, :players %>
+    <%= f.submit %>
+  </div>
+
+<% end %>

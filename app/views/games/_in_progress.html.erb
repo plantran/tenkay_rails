@@ -1,0 +1,6 @@
+Game en cours
+Max score: <%=  @current_game.id %>
+Players:
+<% @current_game.players.each do |player| %>
+  <p><%= player.name %></p>
+<% end %>
