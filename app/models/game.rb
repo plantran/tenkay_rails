@@ -2,8 +2,8 @@ class Game < ApplicationRecord
   DEFAULT_MAX_SCORE = 10_000
 
   has_many :players, dependent: :destroy
-  has_one :current_player, class_name: "Player", primary_key: :current_player_id, foreign_key: :id
-  has_one :next_player, class_name: "Player", primary_key: :next_player_id, foreign_key: :id
+  belongs_to :current_player, class_name: "Player", optional: true
+  belongs_to :next_player, class_name: "Player", optional: true
 
   accepts_nested_attributes_for :players, reject_if: :all_blank, allow_destroy: true
 

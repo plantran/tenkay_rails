@@ -1,20 +1,34 @@
-New game
-<%= simple_form_for @game, data: { turbo: false } do |f| %>
-  <%= f.input :max_score %>
-  <h3>Players</h3>
-  <% if @game.errors[:players].any? %>
-    <% @game.errors[:players].each do |error_message| %>
-      <span><%= error_message %></span>
-    <% end %>
-  <% end %>
-  <div class="players">
-    <%= f.simple_fields_for :players do |player| %>
-      <%= render "player_fields", f: player %>
-      <div class="links">
+<div>
+  <h1 class="text-[35px] font-medium">Nouvelle partie</h1>
+</div>
+<%= simple_form_for @game, data: { turbo: false }, html: { autocomplete: 'off' } do |f| %>
+  <div class="mt-9">
+    <div class="bg-mygreen w-full px-5 py-6 text-black">
+      <h3 class="font-medium text-[18px] mb-3">Options de jeu</h3>
+      <div class="w-full">
+        <%= f.input :max_score %>
       </div>
-    <% end %>
-    <%= link_to_add_association 'Add player', f, :players %>
-    <%= f.submit %>
-  </div>
+    </div>
+    <div class="bg-mypink w-full px-5 py-6 text-black mt-9">
+      <h3 class="font-medium text-[18px] mb-3">Joueurs</h3>
+      <!-- Errors -->
+      <% if @game.errors[:players].any? %>
+        <% @game.errors[:players].each do |error_message| %>
+          <span><%= error_message %></span>
+        <% end %>
+      <% end %>
 
+      <div id="players">
+        <%= f.simple_fields_for :players do |player| %>
+          <%= render "player_fields", f: player %>
+        <% end %>
+        <div class="">
+          <%= link_to_add_association 'Add player', f, :players, class: "bg-[#F3A4A0] block text-center w-full p-3" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <%= f.submit "Commencer", class: "block w-full bg-mybeige text-center p-3 mt-9 text-black cursor-pointer" %>
+  </div>
 <% end %>

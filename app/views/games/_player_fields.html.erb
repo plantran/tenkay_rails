@@ -1,4 +1,10 @@
 <div class="nested-fields">
-  <%= f.input :name %>
-  <%= link_to_remove_association "Remove player", f %>
+  <div class="flex items-end">
+    <div class="<%= "flex-1" if f.index == 0 %>">
+      <%= f.input :name, autocomplete: false %>
+    </div>
+    <% unless f.index == 0 %>
+      <%= link_to_remove_association "X", f, class: "w-[42px] h-[42px] flex justify-center items-center bg-[#C8C1C1] text-white block mb-4 ml-1" %>
+    <% end %>
+  </div>
 </div>

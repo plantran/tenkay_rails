@@ -1,6 +1,12 @@
-Game en cours
-Max score: <%=  @current_game.id %>
-Players:
-<% @current_game.players.each do |player| %>
-  <p><%= player.name %></p>
+<h1>Current player: <%= @current_player.name %></h1>
+<p>Current score: <%= @current_player.current_score %></p>
+<p>Remaining: <%= @current_player.points_to_success %></p>
+
+<p>
+  <i>Next player: <%= @current_game.next_player.name %></i>
+</p>
+
+<%= simple_form_for :player, url: add_score_games_path, method: :patch do |f| %>
+  <%= f.input :score, as: :integer %>
+  <%= f.submit %>
 <% end %>

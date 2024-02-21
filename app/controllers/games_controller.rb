@@ -21,12 +21,24 @@ class GamesController < ApplicationController
     return redirect_to(new_game_path) unless @current_game
 
     @current_game.start! unless @current_game.started?
+    @current_player = @current_game.current_player
   end
 
   def add_score
     return redirect_to(new_game_path) unless @current_game
+    return redirect_to(play_games_path) unless params[:player][:score].presence
 
-    raise
+    @current_player = @current_game.current_player
+    new_score = @current_player.current_score + params[:player][:score].to_i
+    if new_score > @current_game.max_score
+      update_game_players
+    elsif @current_player.update(current_score: new_score)
+      @current_game.finish! if new_score == @current_game.max_score
+      update_game_players
+    end
+
+    # raise
+    redirect_to(play_games_path)
   end
 
   def destroy
@@ -46,5 +58,10 @@ class GamesController < ApplicationController
     session_id = session[:current_anon_user_id] || SecureRandom.urlsafe_base64(nil, false)
     session[:current_anon_user_id] = session_id
     REDIS_CLIENT.set(session_id, @game.id)
+  end
+
+  def update_game_players
+    next_next_player = @current_game.next_player.next_player
+    @current_game.update!(current_player_id: @current_game.next_player.id, next_player_id: next_next_player.id)
   end
 end
