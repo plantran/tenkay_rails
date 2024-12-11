@@ -82,6 +82,6 @@ test:
 production:
   <<: *default
   database: ten_kay_rails_production
-  username: ten_kay_rails
+  username: <%= ENV["DB_USER"] %>
   password: <%= ENV["DB_PASSWORD"] %>
   url: <%= ENV["DB_HOST"] %>
